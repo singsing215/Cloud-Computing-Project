@@ -3,7 +3,7 @@
 ## Chatbot Required Features
 This is line chatbot.
 
-The line chatbot is the context of public health care about the coronavirus. It can be understood as things like the measurement against coronavirus, finding face mask/cleaning substance, summarize of news, etc. 
+The line chatbot is the context of public health care about the coronavirus.
 
 Specific features are as follows:
 1. The bot can differentiate at least 2 different types of queries and give 2 different types of responses.
