@@ -11,5 +11,5 @@ Specific features are as follows:
 1. The bot will use consume another service other than redis.
 1. The bot will be running on Heroku.
 1. The bot will use git for version controls. 
-1. The LINE bot should be written only with Python and its library. 
+1. The LINE bot will be written only with Python and its library. 
 1. For the query part of finding face mask/cleaning substance, the chatbot will provide some advice on finding mask/cleaning substance, making homemade mask/cleaning substance and predicting when and where the mask/cleaning will arrive.
