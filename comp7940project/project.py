@@ -14,7 +14,7 @@ from linebot.exceptions import (
 )
 
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageMessage, ImageSendMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage
+    MessageEvent, TextMessage, TextSendMessage, ImageMessage, ImageSendMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage, LocationSendMessage, QuickReply, QuickReplyButton, MessageAction
 )
 from linebot.utils import PY3
 
@@ -82,9 +82,23 @@ def handle_TextMessage(event):
         msg = '11'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
     if event.message.text=='2':
+        print(event.message.text)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(
+               text='Hello, world',
+               quick_reply=QuickReply(items=[
+               QuickReplyButton(action=MessageAction(label="label", text="text"))
+               ])))
+    if event.message.text=='3':
         line_bot_api.reply_message(event.reply_token,ImageSendMessage(
             original_content_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920',
             preview_image_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920'
+            ))
+    if event.message.text=='4':
+        line_bot_api.reply_message(event.reply_token,LocationSendMessage(
+            title='my location',
+            address='Tokyo',
+            latitude=35.65910807942215,
+            longitude=139.70372892916203
             ))
     else : 
         print(event.message.text)
