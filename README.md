@@ -1,4 +1,4 @@
-﻿# Coronavirus Rrevention Line Chatbot
+﻿# Coronavirus Prevention Line Chatbot
  
 ## Team Information
 
