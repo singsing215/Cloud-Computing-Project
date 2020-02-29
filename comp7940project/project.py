@@ -77,12 +77,18 @@ def callback():
 
 # Handler function for Text Message
 def handle_TextMessage(event):
-    print(event.message.text)
-    msg = 'You"' + event.message.text + '" '
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(msg)
-    )
+    if event.message.text=='1':
+        print(event.message.text)
+        msg = '11'
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
+    if event.message.text=='2':
+        print(event.message.text)
+        msg = '22'
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
+    else : 
+        print(event.message.text)
+        msg = 'i dont understand'
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
 
 # Handler function for Sticker Message
 def handle_StickerMessage(event):
