@@ -14,7 +14,7 @@ from linebot.exceptions import (
 )
 
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage
+    MessageEvent, TextMessage, TextSendMessage, ImageMessage, ImageSendMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage
 )
 from linebot.utils import PY3
 
@@ -82,9 +82,10 @@ def handle_TextMessage(event):
         msg = '11'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
     if event.message.text=='2':
-        print(event.message.text)
-        msg = '22'
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
+        line_bot_api.reply_message(event.reply_token,ImageSendMessage(
+            original_content_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920',
+            preview_image_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920'
+            ))
     else : 
         print(event.message.text)
         msg = 'i dont understand'
@@ -92,33 +93,22 @@ def handle_TextMessage(event):
 
 # Handler function for Sticker Message
 def handle_StickerMessage(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        StickerSendMessage(
+    line_bot_api.reply_message(event.reply_token,StickerSendMessage(
             package_id=event.message.package_id,
-            sticker_id=event.message.sticker_id)
-    )
+            sticker_id=event.message.sticker_id
+            ))
 
 # Handler function for Image Message
 def handle_ImageMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice image!")
-    )
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text="Nice image!"))
 
 # Handler function for Video Message
 def handle_VideoMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice video!")
-    )
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text="Nice video!"))
 
 # Handler function for File Message
 def handle_FileMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice file!")
-    )
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text="Nice file!"))
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
