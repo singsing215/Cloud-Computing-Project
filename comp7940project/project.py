@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import os
 import sys
 import redis
-
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
@@ -18,6 +17,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage
 )
 from linebot.utils import PY3
+
 
 app = Flask(__name__)
 
@@ -78,7 +78,7 @@ def callback():
 # Handler function for Text Message
 def handle_TextMessage(event):
     print(event.message.text)
-    msg = 'You said: "' + event.message.text + '" '
+    msg = 'You: "' + event.message.text + '" '
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
