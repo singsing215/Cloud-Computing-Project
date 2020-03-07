@@ -27,7 +27,7 @@ from linebot.models import (
     FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
     TextComponent, SpacerComponent, IconComponent, ButtonComponent,
     SeparatorComponent, QuickReply, QuickReplyButton,
-    ImageSendMessage
+    ImageSendMessage,VideoSendMessage
 )
 from linebot.utils import PY3
 
@@ -39,7 +39,7 @@ PORT = "11363"
 # HOST = "redis-16236.c10.us-east-1-3.ec2.cloud.redislabs.com"
 # PWD = "A5aztmjp4xcnb7c5w30cet77ow48llg2gfb8mii1e87cgdbc6xr"
 # PORT = "16236"
-
+redis1 = redis.Redis(host=HOST, password=PWD, port=PORT, decode_responses=True)
 app = Flask(__name__)
 
 # get channel_secret and channel_access_token from your environment variable
