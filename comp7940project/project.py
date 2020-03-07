@@ -14,10 +14,31 @@ from linebot.exceptions import (
 )
 
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageMessage, ImageSendMessage, VideoMessage, FileMessage, StickerMessage, StickerSendMessage, LocationSendMessage, QuickReply, QuickReplyButton, MessageAction, VideoSendMessage
+    MessageEvent, TextMessage, TextSendMessage,
+    TemplateSendMessage, ConfirmTemplate, MessageAction,
+    ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
+    PostbackAction, DatetimePickerAction,
+    CameraAction, CameraRollAction, LocationAction,
+    CarouselTemplate, CarouselColumn, PostbackEvent,
+    StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
+    ImageMessage, VideoMessage, AudioMessage, FileMessage,
+    UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
+    MemberJoinedEvent, MemberLeftEvent,
+    FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
+    TextComponent, SpacerComponent, IconComponent, ButtonComponent,
+    SeparatorComponent, QuickReply, QuickReplyButton,
+    ImageSendMessage
 )
 from linebot.utils import PY3
 
+# fill in the following.
+HOST = "redis-11363.c1.asia-northeast1-1.gce.cloud.redislabs.com"
+PWD = "1nOA0St0I7p9pQqu8HkQ18XqDfnoPeoL"
+PORT = "11363"
+# 自己的redis
+# HOST = "redis-16236.c10.us-east-1-3.ec2.cloud.redislabs.com"
+# PWD = "A5aztmjp4xcnb7c5w30cet77ow48llg2gfb8mii1e87cgdbc6xr"
+# PORT = "16236"
 
 app = Flask(__name__)
 
@@ -75,6 +96,81 @@ def callback():
 
     return 'OK'
 
+def replynews(event):
+        title = redis1.get('titleszy')
+        summary = redis1.get('summaryszy')
+        link = redis1.get('linkszy')
+        bubble = BubbleContainer(
+            direction='ltr',
+            hero=ImageComponent(
+                url='https://www.news.gov.hk/web/common/images/newsArticleBanner/eng/20200211000937694.png',
+                size='full',
+                aspect_ratio='20:13',
+                aspect_mode='cover',
+                action=URIAction(uri='https://www.news.gov.hk/eng/categories/wuhan/index.html', label='label')
+            ),
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    # title
+                    TextComponent(text=title, weight='bold', size='sm'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                spacing='sm',
+                                contents=[
+                                    TextComponent(
+                                        text=summary,
+                                        wrap=True,
+                                        color='#666666',
+                                        size='sm',
+                                        flex=5
+                                    )
+                                ],
+                            ),
+                        ],
+                    )
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='sm',
+                contents=[
+                    SeparatorComponent(),
+                    # websiteAction
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='More Detail', uri=link)
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+
+
+def editnews(event):
+    newnews = event.message.text.split('##')
+    if(len(newnews) == 4):
+        redis1.set('titleszy', newnews[1])
+        redis1.set('summaryszy', newnews[2])
+        redis1.set('linkszy', newnews[3])
+        alerttext = 'news updated successful'
+    else:
+        alerttext = 'please enter correct newsformat'
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(alerttext))
+
+
+
 # Handler function for Text Message
 def handle_TextMessage(event):
     if event.message.text=='1':
@@ -105,6 +201,10 @@ def handle_TextMessage(event):
             original_content_url='https://www.youtube.com/watch?v=8hAMDi3yzq0',
             preview_image_url='https://i.ytimg.com/an_webp/8hAMDi3yzq0/mqdefault_6s.webp?du=3000&sqp=CPW06PIF&rs=AOn4CLCxPfPorMvIWw9Typ3RwxQ8Vs2ujQ'
             ))
+    if(event.message.text == 'news'):
+        replynews(event)
+    if(event.message.text[0:7] == 'editnew'):
+        editnews(event)
     else : 
         print(event.message.text)
         msg = 'i dont understand'
