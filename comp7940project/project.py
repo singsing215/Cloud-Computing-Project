@@ -27,7 +27,8 @@ from linebot.models import (
     FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
     TextComponent, SpacerComponent, IconComponent, ButtonComponent,
     SeparatorComponent, QuickReply, QuickReplyButton,
-    ImageSendMessage,VideoSendMessage
+    ImageSendMessage,VideoSendMessage,PostbackTemplateAction,
+    MessageTemplateAction,URITemplateAction
 )
 from linebot.utils import PY3
 
@@ -189,7 +190,7 @@ def handle_TextMessage(event):
             original_content_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920',
             preview_image_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920'
             ))
-    if event.message.text=='4':
+    if event.message.text=='44':
         line_bot_api.reply_message(event.reply_token,LocationSendMessage(
             title='my location',
             address='Tokyo',
@@ -201,14 +202,189 @@ def handle_TextMessage(event):
             original_content_url='https://www.youtube.com/watch?v=8hAMDi3yzq0',
             preview_image_url='https://i.ytimg.com/an_webp/8hAMDi3yzq0/mqdefault_6s.webp?du=3000&sqp=CPW06PIF&rs=AOn4CLCxPfPorMvIWw9Typ3RwxQ8Vs2ujQ'
             ))
+    if event.message.text=='6':
+        message = TemplateSendMessage(
+            alt_text='Carousel template',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url='https://example.com/item1.jpg',
+                        title='this is menu1',
+                        text='description1',
+                        actions=[
+                            PostbackTemplateAction(
+                                label='postback1',
+                                text='postback text1',
+                                data='action=buy&itemid=1'
+                            ),
+                            MessageTemplateAction(
+                                label='message1',
+                                text='message text1'
+                            ),
+                            URITemplateAction(
+                                label='uri1',
+                                uri='http://example.com/1'
+                            )
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='https://example.com/item2.jpg',
+                        title='this is menu2',
+                        text='description2',
+                        actions=[
+                            PostbackTemplateAction(
+                                label='postback2',
+                                text='postback text2',
+                                data='action=buy&itemid=2'
+                            ),
+                            MessageTemplateAction(
+                                label='message2',
+                                text='message text2'
+                            ),
+                            URITemplateAction(
+                                label='uri2',
+                                uri='http://example.com/2'
+                            )
+                        ]
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text=='7':
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    PostbackTemplateAction(
+                        label='postback',
+                        text='postback text',
+                        data='action=buy&itemid=1'
+                    ),
+                    MessageTemplateAction(
+                        label='message',
+                        text='message text'
+                    ),
+                    URITemplateAction(
+                        label='uri',
+                        uri='https://www.youtube.com/watch?v=8hAMDi3yzq0'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text=='8':
+        message = TemplateSendMessage(
+            alt_text='Confirm template',
+            template=ConfirmTemplate(
+                text='Are you sure?',
+                actions=[
+                    PostbackTemplateAction(
+                        label='postback',
+                        text='postback text',
+                        data='action=buy&itemid=1'
+                    ),
+                    MessageTemplateAction(
+                        label='message',
+                        text='message text'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text=='9':
+        message = TemplateSendMessage(
+            alt_text='ImageCarousel template',
+            template=ImageCarouselTemplate(
+                columns=[
+                    ImageCarouselColumn(
+                        image_url='https://example.com/item1.jpg',
+                        action=PostbackTemplateAction(
+                            label='postback1',
+                            text='postback text1',
+                            data='action=buy&itemid=1'
+                        )
+                    ),
+                    ImageCarouselColumn(
+                        image_url='https://example.com/item2.jpg',
+                        action=PostbackTemplateAction(
+                            label='postback2',
+                            text='postback text2',
+                            data='action=buy&itemid=2'
+                        )
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text=='help':
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                title='User Guide 1',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='1.',
+                        text='1'
+                    ),
+                    MessageTemplateAction(
+                        label='2.',
+                        text='2'
+                    ),
+                    MessageTemplateAction(
+                        label='3.',
+                        text='3'
+                    ),
+                    MessageTemplateAction(
+                        label='4.More...',
+                        text='4'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text=='4':
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                title='User Guide 2',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='5.',
+                        text='5'
+                    ),
+                    MessageTemplateAction(
+                        label='6.',
+                        text='6'
+                    ),
+                    MessageTemplateAction(
+                        label='7.',
+                        text='7'
+                    ),
+                    MessageTemplateAction(
+                        label='8.',
+                        text='8'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
     if(event.message.text == 'news'):
         replynews(event)
     if(event.message.text[0:7] == 'editnew'):
         editnews(event)
     else : 
         print(event.message.text)
-        msg = 'i dont understand'
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(
+           text='what 7 you say? see "help".',
+           quick_reply=QuickReply(items=[
+           QuickReplyButton(action=MessageAction(label="help", text="help"))
+           ])))
 
 # Handler function for Sticker Message
 def handle_StickerMessage(event):
