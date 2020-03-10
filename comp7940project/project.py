@@ -197,20 +197,20 @@ def handle_TextMessage(event):
             latitude=35.65910807942215,
             longitude=139.70372892916203
             ))
-    if event.message.text=='5':
+    if event.message.text=='6':
         line_bot_api.reply_message(event.reply_token,VideoSendMessage(
             original_content_url='https://www.youtube.com/watch?v=8hAMDi3yzq0',
             preview_image_url='https://i.ytimg.com/an_webp/8hAMDi3yzq0/mqdefault_6s.webp?du=3000&sqp=CPW06PIF&rs=AOn4CLCxPfPorMvIWw9Typ3RwxQ8Vs2ujQ'
             ))
-    if event.message.text=='6':
+    if event.message.text=='5':
         message = TemplateSendMessage(
             alt_text='Carousel template',
             template=CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url='https://example.com/item1.jpg',
-                        title='this is menu1',
-                        text='description1',
+                        thumbnail_image_url='https://object.bigbigchannel.com.hk/2020/02/25/1582642972238.png',
+                        title='How To Make Your Own Mask',
+                        text='It is better to have homemade mask than none',
                         actions=[
                             PostbackTemplateAction(
                                 label='postback1',
@@ -222,15 +222,15 @@ def handle_TextMessage(event):
                                 text='message text1'
                             ),
                             URITemplateAction(
-                                label='uri1',
-                                uri='http://example.com/1'
+                                label='view video',
+                                uri='https://www.youtube.com/watch?v=8hAMDi3yzq0'
                             )
                         ]
                     ),
                     CarouselColumn(
-                        thumbnail_image_url='https://example.com/item2.jpg',
-                        title='this is menu2',
-                        text='description2',
+                        thumbnail_image_url='https://cdn.hk01.com/di/media/images/3921597/org/823622f9fe1a3279567080bd282ac3a5.jpg/B4zaMGYvBd4Kh4M78MmCcm8t0klu951tCVlogAlZaIA?v=w1920r16_9',
+                        title='Homemade Alcohol Hand Rub',
+                        text='Contains detailed steps for making hand rub',
                         actions=[
                             PostbackTemplateAction(
                                 label='postback2',
@@ -242,8 +242,28 @@ def handle_TextMessage(event):
                                 text='message text2'
                             ),
                             URITemplateAction(
-                                label='uri2',
-                                uri='http://example.com/2'
+                                label='view video',
+                                uri='https://www.youtube.com/watch?v=FLLG54YfaLQ'
+                            )
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='https://i.ytimg.com/vi/t30dxGn-ECc/hqdefault.jpg',
+                        title='How To Make Alcohol Spray',
+                        text='Make a hand cleaning spray that works just as well',
+                        actions=[
+                            PostbackTemplateAction(
+                                label='postback1',
+                                text='postback text1',
+                                data='action=buy&itemid=1'
+                            ),
+                            MessageTemplateAction(
+                                label='message1',
+                                text='message text1'
+                            ),
+                            URITemplateAction(
+                                label='view video',
+                                uri='https://www.youtube.com/watch?v=t30dxGn-ECc'
                             )
                         ]
                     )
@@ -328,8 +348,8 @@ def handle_TextMessage(event):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='1.',
-                        text='1'
+                        label='1.News about COVID19',
+                        text='news'
                     ),
                     MessageTemplateAction(
                         label='2.',
@@ -355,15 +375,15 @@ def handle_TextMessage(event):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='5.',
+                        label='5.Viedo for DIY mask',
                         text='5'
                     ),
                     MessageTemplateAction(
-                        label='6.',
+                        label='6.Where to buy mask',
                         text='6'
                     ),
                     MessageTemplateAction(
-                        label='7.',
+                        label='7.Flight info search',
                         text='7'
                     ),
                     MessageTemplateAction(
@@ -381,7 +401,7 @@ def handle_TextMessage(event):
     else : 
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
-           text='what 7 you say? see "help".',
+           text='what 7 you say? need "help"?',
            quick_reply=QuickReply(items=[
            QuickReplyButton(action=MessageAction(label="help", text="help"))
            ])))
