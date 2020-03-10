@@ -32,6 +32,8 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 
 ```sh
 $ heroku git:clone -a comp7940project
+$ cd comp7940project
+
 $ git commit -am "make it better"
 $ git push heroku master
 
