@@ -4,6 +4,8 @@ import os
 import sys
 import redis
 from argparse import ArgumentParser
+import json
+import requests
 
 from flask import Flask, request, abort
 from linebot import (
@@ -171,13 +173,49 @@ def editnews(event):
     line_bot_api.reply_message(event.reply_token, TextSendMessage(alerttext))
 
 
+def writeinjson(api):
+    req = requests.get(api)
+    with open("./name.json", "w") as f:
+        json.dump(req.json(), f, ensure_ascii=False)
+    return req.json()
 
+
+def flight(event):
+    message='Here are the latest flight information and dates for confirmed COVID19 patients:\n'
+    a=writeinjson(ncovsame)
+    newslist=list(a["newslist"])
+    for no in newslist:
+        m='Flight no: %s, date: %s\n'% (no["no"],no["date"])
+        message+=m
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+
+
+def province(q,event):
+    message=''
+    a=writeinjson(ncovcity)
+    newslist=list(a["newslist"])
+    for no in newslist:
+        m='District: %s, %s: %s\n'% (no["provinceName"],q,no[q])
+        message+=m
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+
+ncovsame = 'http://api.tianapi.com/txapi/ncovsame/index?key=a8d66af010b307f9cf301c353d1aa0a5' 
+ncovcity = 'http://api.tianapi.com/txapi/ncovcity/index?key=a8d66af010b307f9cf301c353d1aa0a5'
 # Handler function for Text Message
 def handle_TextMessage(event):
     if event.message.text=='1':
         print(event.message.text)
         msg = '11'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
+    if event.message.text=='number':
+        print(event.message.text)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(
+           text='This is a guide to get the latest Numbers of COVID19 in Chinese provinces and SAR: \n 1.Number of confirmed patient type----confirmed\n 2.Number of cured patient type----cured\n 3.Number of dead patient type----dead',
+           quick_reply=QuickReply(items=[
+           QuickReplyButton(action=MessageAction(label="confirmed", text="confirmed")),
+           QuickReplyButton(action=MessageAction(label="cured", text="cured")),
+           QuickReplyButton(action=MessageAction(label="dead", text="dead"))
+           ])))
     if event.message.text=='2':
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
@@ -202,7 +240,7 @@ def handle_TextMessage(event):
             original_content_url='https://www.youtube.com/watch?v=8hAMDi3yzq0',
             preview_image_url='https://i.ytimg.com/an_webp/8hAMDi3yzq0/mqdefault_6s.webp?du=3000&sqp=CPW06PIF&rs=AOn4CLCxPfPorMvIWw9Typ3RwxQ8Vs2ujQ'
             ))
-    if event.message.text=='5':
+    if event.message.text=='video':
         message = TemplateSendMessage(
             alt_text='Carousel template',
             template=CarouselTemplate(
@@ -375,20 +413,20 @@ def handle_TextMessage(event):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='5.Viedo for DIY mask',
-                        text='5'
+                        label='5.Where to buy mask',
+                        text='44'
                     ),
                     MessageTemplateAction(
-                        label='6.Where to buy mask',
-                        text='6'
+                        label='6.Viedo for DIY mask',
+                        text='video'
                     ),
                     MessageTemplateAction(
                         label='7.Flight info search',
-                        text='7'
+                        text='flight'
                     ),
                     MessageTemplateAction(
-                        label='8.',
-                        text='8'
+                        label='8.Number of COVID19',
+                        text='number'
                     )
                 ]
             )
@@ -398,10 +436,18 @@ def handle_TextMessage(event):
         replynews(event)
     if(event.message.text[0:7] == 'editnew'):
         editnews(event)
+    if(event.message.text == 'flight'):
+        flight(event)
+    if(event.message.text == 'confirmed'):
+        province("confirmedCount",event)
+    if(event.message.text == 'dead'):
+        province("deadCount",event)
+    if(event.message.text == 'cured'):
+        province("curedCount",event)
     else : 
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
-           text='what 7 you say? need "help"?',
+           text='I am not sure, need "help"?',
            quick_reply=QuickReply(items=[
            QuickReplyButton(action=MessageAction(label="help", text="help"))
            ])))
