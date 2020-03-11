@@ -21,3 +21,4 @@ Specific features are as follows:
    This function is use another service other than redis. The corresponding news is updated by **Department of health in Hong Kong**.  
    As the process of building the chatbot, the reply detail may change XD. (Perhaps the COVID19 disappear)  
 1. For the query part of finding face mask/cleaning substance, the chatbot will provide some advice on finding mask/cleaning substance, making homemade mask/cleaning substance and predicting when and where the mask/cleaning will arrive.
+1. For the query part of getting latest number of infections, the line chatbot will answers the latest numbers of infections, cures and deaths for COVID19. Besides, user can check the same flight information of infected passengers.
