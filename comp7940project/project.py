@@ -202,22 +202,63 @@ def province(q,event):
     line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
     
 
-def pyplot_graph():
+def hubei_graph():
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
-    for k in newslist:
-        name=k["provinceName"]
-        con=k["confirmedCount"]
-        pt.plot(name,con, "ro-"),
-        pt.bar(name,con),
-        pt.xlabel("province"),
-        pt.ylabel("Confirmed")
-        pt.savefig('send.png')
+    hubei=newslist[0]
+    conf=hubei.get('confirmedCount')
+    cur=hubei.get('curedCount')
+    dead=hubei.get('deadCount')
+    data=[conf,cur,dead]
+    labels=['Confirmed','Cured','Dead']
+    pt.bar(range(len(data)), data, tick_label=labels)
+    pt.xlabel('Hubei'),
+    pt.ylabel("Count")
+    pt.savefig('send.png')
     CLIENT_ID = "135f2074e557c95"
     PATH = "send.png"
     im = pyimgur.Imgur(CLIENT_ID)
     uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
     return uploaded_image.link
+
+def hk_graph():
+    a=writeinjson(ncovcity)
+    newslist=list(a["newslist"])
+    hubei=newslist[3]
+    conf=hubei.get('confirmedCount')
+    cur=hubei.get('curedCount')
+    dead=hubei.get('deadCount')
+    data=[conf,cur,dead]
+    labels=['Confirmed','Cured','Dead']
+    pt.bar(range(len(data)), data, tick_label=labels)
+    pt.xlabel('Hong Kong'),
+    pt.ylabel("Count")
+    pt.savefig('send.png')
+    CLIENT_ID = "135f2074e557c95"
+    PATH = "send.png"
+    im = pyimgur.Imgur(CLIENT_ID)
+    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+    return uploaded_image.link
+
+def gd_graph():
+    a=writeinjson(ncovcity)
+    newslist=list(a["newslist"])
+    hubei=newslist[2]
+    conf=hubei.get('confirmedCount')
+    cur=hubei.get('curedCount')
+    dead=hubei.get('deadCount')
+    data=[conf,cur,dead]
+    labels=['Confirmed','Cured','Dead']
+    pt.bar(range(len(data)), data, tick_label=labels)
+    pt.xlabel('Guangdong'),
+    pt.ylabel("Count")
+    pt.savefig('send.png')
+    CLIENT_ID = "135f2074e557c95"
+    PATH = "send.png"
+    im = pyimgur.Imgur(CLIENT_ID)
+    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+    return uploaded_image.link
+
 
 ncovsame = 'http://api.tianapi.com/txapi/ncovsame/index?key=a8d66af010b307f9cf301c353d1aa0a5' 
 ncovcity = 'http://api.tianapi.com/txapi/ncovcity/index?key=a8d66af010b307f9cf301c353d1aa0a5'
@@ -248,8 +289,20 @@ def handle_TextMessage(event):
             original_content_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920',
             preview_image_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920'
             ))
-    if event.message.text=='i':
-        img_url = pyplot_graph()
+    if event.message.text=='Hubei':
+        img_url = hubei_graph()
+        line_bot_api.reply_message(event.reply_token,ImageSendMessage(
+            original_content_url=img_url,
+            preview_image_url=img_url
+            ))
+    if event.message.text=='Hongkong':
+        img_url = hk_graph()
+        line_bot_api.reply_message(event.reply_token,ImageSendMessage(
+            original_content_url=img_url,
+            preview_image_url=img_url
+            ))
+    if event.message.text=='Guangdong':
+        img_url = gd_graph()
         line_bot_api.reply_message(event.reply_token,ImageSendMessage(
             original_content_url=img_url,
             preview_image_url=img_url
