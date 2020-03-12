@@ -203,6 +203,8 @@ def province(q,event):
     
 
 def hubei_graph():
+    pt.clf()
+    pt.cla()
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
     hubei=newslist[0]
@@ -222,15 +224,17 @@ def hubei_graph():
     return uploaded_image.link
 
 def hk_graph():
+    pt.clf()
+    pt.cla()
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
-    hubei=newslist[3]
-    conf=hubei.get('confirmedCount')
-    cur=hubei.get('curedCount')
-    dead=hubei.get('deadCount')
-    data=[conf,cur,dead]
+    hk=newslist[3]
+    hconf=hk.get('confirmedCount')
+    hcur=hk.get('curedCount')
+    hdead=hk.get('deadCount')
+    hdata=[hconf,hcur,hdead]
     labels=['Confirmed','Cured','Dead']
-    pt.bar(range(len(data)), data, tick_label=labels)
+    pt.bar(range(len(hdata)), hdata, tick_label=labels)
     pt.xlabel('Hong Kong'),
     pt.ylabel("Count")
     pt.savefig('send.png')
@@ -241,15 +245,17 @@ def hk_graph():
     return uploaded_image.link
 
 def gd_graph():
+    pt.clf()
+    pt.cla()
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
-    hubei=newslist[2]
-    conf=hubei.get('confirmedCount')
-    cur=hubei.get('curedCount')
-    dead=hubei.get('deadCount')
-    data=[conf,cur,dead]
+    gd=newslist[2]
+    gconf=gd.get('confirmedCount')
+    gcur=gd.get('curedCount')
+    gdead=gd.get('deadCount')
+    gdata=[gconf,gcur,gdead]
     labels=['Confirmed','Cured','Dead']
-    pt.bar(range(len(data)), data, tick_label=labels)
+    pt.bar(range(len(gdata)), gdata, tick_label=labels)
     pt.xlabel('Guangdong'),
     pt.ylabel("Count")
     pt.savefig('send.png')
