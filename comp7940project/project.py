@@ -200,115 +200,132 @@ def province(q,event):
         m='District: %s, %s: %s\n'% (no["provinceName"],q,no[q])
         message+=m
     line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+ 
     
+def translate(x):
+    if x=='Hubei':x='湖北'
+    if x=='Beijing':x='北京'
+    if x=='Hongkong':x='香港'
+    if x=='Guangdong':x='广东'
+    if x=='Sichuan':x='四川'
+    if x=='Gansu':x='甘肃'
+    if x=='Heilongjiang':x='黑龙江'
+    if x=='Taiwan':x='台湾'
+    if x=='Shandong':x='山东'
+    if x=='Shanghai':x='上海'
+    if x=='Zhejiang':x='浙江'
+    if x=='Chongqing':x='重庆'
+    if x=='Hunan':x='湖南'
+    if x=='Liaoning':x='辽宁'
+    if x=='Shaanxi':x='陕西'
+    if x=='Guangxi':x='广西'
+    if x=='Guizhou':x='贵州'
+    if x=='Hebei':x='河北'
+    if x=='Ningxia':x='宁夏'
+    if x=='Menggu':x='蒙古'
+    if x=='Henan':x='河南'
+    if x=='Jiangsu':x='江苏'
+    if x=='Yunnan':x='云南'
+    if x=='Hainan':x='海南'
+    if x=='Tianjin':x='天津'
+    if x=='Shanxi':x='山西'
+    if x=='Anhui':x='安徽'
+    if x=='Jiangxi':x='江西'
+    if x=='Fujian':x='福建'
+    if x=='Jilin':x='吉林'
+    if x=='Xinjiang':x='新疆'
+    if x=='Qinghai':x='青海'
+    if x=='Macau':x='澳门'
+    if x=='Xizang':x='西藏'
+    return x
 
-def hubei_graph():
+
+def bar_chart_en(x):
     pt.clf()
     pt.cla()
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
-    hubei=newslist[0]
-    conf=hubei.get('confirmedCount')
-    cur=hubei.get('curedCount')
-    dead=hubei.get('deadCount')
-    data=[conf,cur,dead]
-    labels=['Confirmed','Cured','Dead']
-    pt.bar(range(len(data)), data, tick_label=labels)
-    pt.xlabel('Hubei'),
-    pt.ylabel("Count")
-    pt.savefig('send.png')
-    CLIENT_ID = "135f2074e557c95"
-    PATH = "send.png"
-    im = pyimgur.Imgur(CLIENT_ID)
-    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
-    return uploaded_image.link
+    for i in range(0,34):
+        if translate(x) in newslist[i].values():
+            city=newslist[i]
+            con=city.get('confirmedCount')
+            cur=city.get('curedCount')
+            dead=city.get('deadCount')
+            data=[con,cur,dead]
+            labels=['Confirmed','Cured','Dead']
+            pt.bar(range(len(data)), data, color='rgb',tick_label=labels)
+            pt.xlabel(x),
+            pt.ylabel("Count")
+            pt.savefig('send.png')
+            CLIENT_ID = "135f2074e557c95"
+            PATH = "send.png"
+            im = pyimgur.Imgur(CLIENT_ID)
+            uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+            return uploaded_image.link
 
-def hk_graph():
+def bar_chart_ch(x):
     pt.clf()
     pt.cla()
     a=writeinjson(ncovcity)
     newslist=list(a["newslist"])
-    hk=newslist[3]
-    hconf=hk.get('confirmedCount')
-    hcur=hk.get('curedCount')
-    hdead=hk.get('deadCount')
-    hdata=[hconf,hcur,hdead]
-    labels=['Confirmed','Cured','Dead']
-    pt.bar(range(len(hdata)), hdata, tick_label=labels)
-    pt.xlabel('Hong Kong'),
-    pt.ylabel("Count")
-    pt.savefig('send.png')
-    CLIENT_ID = "135f2074e557c95"
-    PATH = "send.png"
-    im = pyimgur.Imgur(CLIENT_ID)
-    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
-    return uploaded_image.link
-
-def gd_graph():
-    pt.clf()
-    pt.cla()
-    a=writeinjson(ncovcity)
-    newslist=list(a["newslist"])
-    gd=newslist[2]
-    gconf=gd.get('confirmedCount')
-    gcur=gd.get('curedCount')
-    gdead=gd.get('deadCount')
-    gdata=[gconf,gcur,gdead]
-    labels=['Confirmed','Cured','Dead']
-    pt.bar(range(len(gdata)), gdata, tick_label=labels)
-    pt.xlabel('Guangdong'),
-    pt.ylabel("Count")
-    pt.savefig('send.png')
-    CLIENT_ID = "135f2074e557c95"
-    PATH = "send.png"
-    im = pyimgur.Imgur(CLIENT_ID)
-    uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
-    return uploaded_image.link
+    for i in range(0,34):
+        if x in newslist[i].values():
+            city=newslist[i]
+            con=city.get('confirmedCount')
+            cur=city.get('curedCount')
+            dead=city.get('deadCount')
+            data=[con,cur,dead]
+            labels=['Confirmed','Cured','Dead']
+            pt.bar(range(len(data)), data, color='rgb',tick_label=labels)
+            pt.ylabel("Count")
+            pt.savefig('send.png')
+            CLIENT_ID = "135f2074e557c95"
+            PATH = "send.png"
+            im = pyimgur.Imgur(CLIENT_ID)
+            uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+            return uploaded_image.link
 
 
 ncovsame = 'http://api.tianapi.com/txapi/ncovsame/index?key=a8d66af010b307f9cf301c353d1aa0a5' 
 ncovcity = 'http://api.tianapi.com/txapi/ncovcity/index?key=a8d66af010b307f9cf301c353d1aa0a5'
+a=writeinjson(ncovcity)
+newslist=list(a["newslist"])
+provinceShortName_list=[]
+for i in newslist:
+    stri=i['provinceShortName']
+    provinceShortName_list.append(stri)
+
 # Handler function for Text Message
 def handle_TextMessage(event):
-    if event.message.text=='1':
-        print(event.message.text)
-        msg = '11'
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(msg))
     if event.message.text=='number':
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
-           text='This is a guide to get the latest Numbers of COVID19 in Chinese provinces and SAR: \n 1.Number of confirmed patient type----confirmed\n 2.Number of cured patient type----cured\n 3.Number of dead patient type----dead',
+           text='This is a guide to get the latest numbers of COVID19 in chinese provinces, SAR, and Taiwan: \n 1.Number of confirmed patient please type----confirmed\n 2.Number of cured patient please type----cured\n 3.Number of dead patient please type----dead\n 4.Flight info of confirmed COVID19 patients please type----flight',
            quick_reply=QuickReply(items=[
            QuickReplyButton(action=MessageAction(label="confirmed", text="confirmed")),
            QuickReplyButton(action=MessageAction(label="cured", text="cured")),
-           QuickReplyButton(action=MessageAction(label="dead", text="dead"))
+           QuickReplyButton(action=MessageAction(label="dead", text="dead")),
+           QuickReplyButton(action=MessageAction(label="flight", text="flight"))
            ])))
-    if event.message.text=='2':
+    if event.message.text=='chart':
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
-           text='Hello, world',
+           text='This is a guide to get the bar chart for latest COVID19 numbers in each chinese provinces, SAR, and Taiwan: \n 1.You can type the english name with capitalized first letter and Ignore the blank space.\n 2.You also can type simplified Chinese name for search.',
            quick_reply=QuickReply(items=[
-           QuickReplyButton(action=MessageAction(label="label", text="text"))
+           QuickReplyButton(action=MessageAction(label="Hubei", text="Hubei")),
+           QuickReplyButton(action=MessageAction(label="Guangdong", text="Guangdong")),
+           QuickReplyButton(action=MessageAction(label="Hongkong", text="Hongkong")),
+           QuickReplyButton(action=MessageAction(label="香港", text="香港"))
            ])))
-    if event.message.text=='3':
-        line_bot_api.reply_message(event.reply_token,ImageSendMessage(
-            original_content_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920',
-            preview_image_url='https://cdn.hk01.com/di/media/images/715391/org/53bbb25d04815ec78b3f23e5ce6d44da.jpg/VfvDK_ih9FR05oxjDziapjpvWJ6TPVg8IQg08yEINPM?v=w1920'
-            ))
-    if event.message.text=='Hubei':
-        img_url = hubei_graph()
+    x=event.message.text
+    if x in provinceShortName_list:
+        img_url = bar_chart_ch(x)
         line_bot_api.reply_message(event.reply_token,ImageSendMessage(
             original_content_url=img_url,
             preview_image_url=img_url
             ))
-    if event.message.text=='Hongkong':
-        img_url = hk_graph()
-        line_bot_api.reply_message(event.reply_token,ImageSendMessage(
-            original_content_url=img_url,
-            preview_image_url=img_url
-            ))
-    if event.message.text=='Guangdong':
-        img_url = gd_graph()
+    if x=='Hubei'or x=='Beijing'or x=='Guangdong'or x=='Hongkong'or x=='Sichuan'or x=='Gansu'or x=='Heilongjiang'or x=='Taiwan'or x=='Shandong'or x=='Shandong'or x=='Zhejiang'or x=='Zhejiang'or x=='Hunan'or x=='Liaoning'or x=='Shaanxi'or x=='Guangxi'or x=='Guizhou'or x=='Hebei'or x=='Ningxia'or x=='Menggu'or x=='Henan'or x=='Jiangsu'or x=='Yunnan'or x=='Hainan'or x=='Tianjin'or x=='Shanxi'or x=='Anhui'or x=='Jiangxi'or x=='Fujian'or x=='Jilin'or x=='Xinjiang'or x=='Qinghai'or x=='Macau'or x=='Xizang':
+        img_url = bar_chart_en(x)
         line_bot_api.reply_message(event.reply_token,ImageSendMessage(
             original_content_url=img_url,
             preview_image_url=img_url
@@ -320,11 +337,6 @@ def handle_TextMessage(event):
             latitude=35.65910807942215,
             longitude=139.70372892916203
             ))
-    if event.message.text=='6':
-        line_bot_api.reply_message(event.reply_token,VideoSendMessage(
-            original_content_url='https://www.youtube.com/watch?v=8hAMDi3yzq0',
-            preview_image_url='https://i.ytimg.com/an_webp/8hAMDi3yzq0/mqdefault_6s.webp?du=3000&sqp=CPW06PIF&rs=AOn4CLCxPfPorMvIWw9Typ3RwxQ8Vs2ujQ'
-            ))
     if event.message.text=='video':
         message = TemplateSendMessage(
             alt_text='Carousel template',
@@ -335,15 +347,6 @@ def handle_TextMessage(event):
                         title='How To Make Your Own Mask',
                         text='It is better to have homemade mask than none',
                         actions=[
-                            PostbackTemplateAction(
-                                label='postback1',
-                                text='postback text1',
-                                data='action=buy&itemid=1'
-                            ),
-                            MessageTemplateAction(
-                                label='message1',
-                                text='message text1'
-                            ),
                             URITemplateAction(
                                 label='view video',
                                 uri='https://www.youtube.com/watch?v=8hAMDi3yzq0'
@@ -355,15 +358,6 @@ def handle_TextMessage(event):
                         title='Homemade Alcohol Hand Rub',
                         text='Contains detailed steps for making hand rub',
                         actions=[
-                            PostbackTemplateAction(
-                                label='postback2',
-                                text='postback text2',
-                                data='action=buy&itemid=2'
-                            ),
-                            MessageTemplateAction(
-                                label='message2',
-                                text='message text2'
-                            ),
                             URITemplateAction(
                                 label='view video',
                                 uri='https://www.youtube.com/watch?v=FLLG54YfaLQ'
@@ -375,15 +369,6 @@ def handle_TextMessage(event):
                         title='How To Make Alcohol Spray',
                         text='Make a hand cleaning spray that works just as well',
                         actions=[
-                            PostbackTemplateAction(
-                                label='postback1',
-                                text='postback text1',
-                                data='action=buy&itemid=1'
-                            ),
-                            MessageTemplateAction(
-                                label='message1',
-                                text='message text1'
-                            ),
                             URITemplateAction(
                                 label='view video',
                                 uri='https://www.youtube.com/watch?v=t30dxGn-ECc'
@@ -394,80 +379,11 @@ def handle_TextMessage(event):
             )
         )
         line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text=='7':
-        message = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='Please select',
-                actions=[
-                    PostbackTemplateAction(
-                        label='postback',
-                        text='postback text',
-                        data='action=buy&itemid=1'
-                    ),
-                    MessageTemplateAction(
-                        label='message',
-                        text='message text'
-                    ),
-                    URITemplateAction(
-                        label='uri',
-                        uri='https://www.youtube.com/watch?v=8hAMDi3yzq0'
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text=='8':
-        message = TemplateSendMessage(
-            alt_text='Confirm template',
-            template=ConfirmTemplate(
-                text='Are you sure?',
-                actions=[
-                    PostbackTemplateAction(
-                        label='postback',
-                        text='postback text',
-                        data='action=buy&itemid=1'
-                    ),
-                    MessageTemplateAction(
-                        label='message',
-                        text='message text'
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text=='9':
-        message = TemplateSendMessage(
-            alt_text='ImageCarousel template',
-            template=ImageCarouselTemplate(
-                columns=[
-                    ImageCarouselColumn(
-                        image_url='https://example.com/item1.jpg',
-                        action=PostbackTemplateAction(
-                            label='postback1',
-                            text='postback text1',
-                            data='action=buy&itemid=1'
-                        )
-                    ),
-                    ImageCarouselColumn(
-                        image_url='https://example.com/item2.jpg',
-                        action=PostbackTemplateAction(
-                            label='postback2',
-                            text='postback text2',
-                            data='action=buy&itemid=2'
-                        )
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, message)
     if event.message.text=='help':
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
-                title='User Guide 1',
+                title='User Guide',
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -475,43 +391,16 @@ def handle_TextMessage(event):
                         text='news'
                     ),
                     MessageTemplateAction(
-                        label='2.',
-                        text='2'
-                    ),
-                    MessageTemplateAction(
-                        label='3.',
-                        text='3'
-                    ),
-                    MessageTemplateAction(
-                        label='4.More...',
-                        text='4'
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text=='4':
-        message = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                title='User Guide 2',
-                text='Please select',
-                actions=[
-                    MessageTemplateAction(
-                        label='5.Where to buy mask',
-                        text='44'
-                    ),
-                    MessageTemplateAction(
-                        label='6.Viedo for DIY mask',
+                        label='2.Viedo for COVID19',
                         text='video'
                     ),
                     MessageTemplateAction(
-                        label='7.Flight info search',
-                        text='flight'
+                        label='3.Number of COVID19',
+                        text='number'
                     ),
                     MessageTemplateAction(
-                        label='8.Number of COVID19',
-                        text='number'
+                        label='4.Chart of COVID19',
+                        text='chart'
                     )
                 ]
             )
