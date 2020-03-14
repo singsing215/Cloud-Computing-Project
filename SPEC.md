@@ -17,8 +17,7 @@ Specific features are as follows:
 ### Chatbot function design
 
 1. Function in showing the lastest news about COVID19. News collects from [Department of health](https://www.coronavirus.gov.hk/eng/latest_news.html)  
-   After users query the key word **COVID19NEWS**, the chatbot will return the latest news about COVID19 in Hong Kong and the link go ahead to the web page.  
-   This function is use another service other than redis. The corresponding news is updated by **Department of health in Hong Kong**.  
-   As the process of building the chatbot, the reply detail may change XD. (Perhaps the COVID19 disappear)  
+   After users query the key word **NEWS**, the chatbot will return the news about COVID19 in Hong Kong and the link go ahead to the web page.  
+   This function is use redis. The news was collect manually then upload to redis. People can use the line chatbot to upload the news. With the comment editnews##title##summary##link.
 1. For the query part of finding face mask/cleaning substance, the chatbot will provide some advice on finding mask/cleaning substance, making homemade mask/cleaning substance and predicting when and where the mask/cleaning will arrive.
 1. For the query part of getting latest number of infections, the line chatbot will answers the latest numbers of infections, cures and deaths for COVID19. Besides, user can check the same flight information of infected passengers.
