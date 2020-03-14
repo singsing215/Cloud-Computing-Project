@@ -6,7 +6,7 @@
 
   |   NAME     |     SID   |   ACCOUNT   |            types of queries                                        |
   |------------|-----------|-------------|--------------------------------------------------------------------|
-  |SU Zhanyi   |  19430051 |   zhanyis   |  show the latest news about COVID19                                |
+  |SU Zhanyi   |  19430051 |   zhanyis   |  show/upload the news about COVID19 with redis                     |
   |GUO Fusheng |  19413238 | singsing215 |  show latest infections number, chart and video for against COVID19|
  
 ## Line Chatbot QR code
