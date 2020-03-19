@@ -4,3 +4,4 @@ line-bot-sdk
 requests
 matplotlib
 pyimgur
+youtube-data-api

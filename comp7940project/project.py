@@ -35,6 +35,7 @@ from linebot.models import (
     MessageTemplateAction,URITemplateAction
 )
 from linebot.utils import PY3
+from youtube_api import YouTubeDataAPI
 
 # fill in the following.
 HOST = "redis-11363.c1.asia-northeast1-1.gce.cloud.redislabs.com"
@@ -46,6 +47,9 @@ PORT = "11363"
 # PORT = "16236"
 redis1 = redis.Redis(host=HOST, password=PWD, port=PORT, decode_responses=True)
 app = Flask(__name__)
+
+api_key = 'AIzaSyAukOL-TSnJeq3Sn27ZEWQLuFbPp5Afno8'
+yt = YouTubeDataAPI(api_key)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -100,6 +104,61 @@ def callback():
             continue
 
     return 'OK'
+
+def youtubesearch(event):
+    searchmsg = event.message.text.split('?')
+    response = yt.search(searchmsg[1], max_results=3)
+    # newmsg = yt.search('trump', max_results=2)
+    videotitle0 = response[0]['video_title']
+    videotitle1 = response[1]['video_title']
+    videotitle2 = response[2]['video_title']
+    videothu0 = response[0]['video_thumbnail']
+    videothu1 = response[1]['video_thumbnail']
+    videothu2 = response[2]['video_thumbnail']
+    videourl0 = 'https://www.youtube.com/watch?v='+response[0]['video_id']
+    videourl1 = 'https://www.youtube.com/watch?v='+response[1]['video_id']
+    videourl2 = 'https://www.youtube.com/watch?v='+response[2]['video_id']
+    # message = videotitle0 + '#' + videothu0 + '#' +videodes0 + '#' + videourl0
+    # line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+    message = TemplateSendMessage(
+        alt_text='Carousel template',
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url=videothu0,
+                    text=videotitle0[0:56]+'...',
+                    actions=[
+                        URITemplateAction(
+                            label='view video',
+                            uri=videourl0
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url=videothu1,
+                    text=videotitle1[0:56]+'...',
+                    actions=[
+                        URITemplateAction(
+                            label='view video',
+                            uri=videourl1
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url=videothu2,
+                    text=videotitle2[0:56]+'...',
+                    actions=[
+                        URITemplateAction(
+                            label='view video',
+                            uri=videourl2
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    line_bot_api.reply_message(event.reply_token, message)
+
 
 def replynews(event):
         title = redis1.get('titleszy')
@@ -418,6 +477,8 @@ def handle_TextMessage(event):
         province("deadCount",event)
     if(event.message.text == 'cured'):
         province("curedCount",event)
+    elif(event.message.text[0:8] == 'youtube?'):
+        youtubesearch(event)
     else : 
         print(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(
