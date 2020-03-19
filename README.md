@@ -19,3 +19,9 @@ https://developers.line.biz/en/reference
 https://github.com/line/line-bot-sdk-python
 
 https://apidocs.imgur.com
+
+https://github.com/SMAPPNYU/youtube-data-api
+
+https://github.com/youtube/api-samples/tree/master/python
+
+https://developers.google.com/youtube/v3/
