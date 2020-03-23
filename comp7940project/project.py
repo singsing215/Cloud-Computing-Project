@@ -48,7 +48,7 @@ PORT = "11363"
 redis1 = redis.Redis(host=HOST, password=PWD, port=PORT, decode_responses=True)
 app = Flask(__name__)
 
-api_key = 'GOOGLE_API'
+api_key = os.getenv('GOOGLE_API', None)
 yt = YouTubeDataAPI(api_key)
 
 # get channel_secret and channel_access_token from your environment variable
